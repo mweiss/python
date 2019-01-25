@@ -48,7 +48,8 @@ def create_from_yaml(k8s_client, yaml_file, verbose=False, **kwargs):
         # Take care for the case e.g. api_type is "apiextensions.k8s.io"
         # Only replace the last instance
         group = "".join(group.rsplit(".k8s.io", 1))
-        fcn_to_call = "{0}{1}Api".format(group.capitalize(),
+        group = "".join([part.capitalize() for part in group.split(".")])
+        fcn_to_call = "{0}{1}Api".format(group,
                                          version.capitalize())
         k8s_api = getattr(client, fcn_to_call)(k8s_client)
         # Replace CamelCased action_type into snake_case
